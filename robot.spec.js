@@ -20,10 +20,10 @@ describe('Robot', () => {
               orientation: 'N',
               planet
           })
-          let newState = r.move('F')
-          expect(newState.position).toEqual([0, 1])
-          expect(newState.orientation).toEqual('N')
-          expect(newState.planet).toEqual(planet)
+          r.move('F')
+          expect(r.position).toEqual([0, 1])
+          expect(r.orientation).toEqual('N')
+          expect(r.planet).toEqual(planet)
         })
 
         it('should move y position forwards when moving forward from E', () => {
@@ -32,8 +32,8 @@ describe('Robot', () => {
             orientation: 'E',
             planet
           })
-          let newState = r.move('F')
-          expect(newState.position).toEqual([1, 2])
+          r.move('F')
+          expect(r.position).toEqual([1, 2])
         })
 
         it('should move x position when moving forwads from S', () => {
@@ -42,18 +42,28 @@ describe('Robot', () => {
             orientation: 'S',
             planet
           })
-          let newState = r.move('F')
-          expect(newState.position).toEqual([2, 1])
+          r.move('F')
+          expect(r.position).toEqual([2, 1])
         })
 
         it('should move y position backwards when moving forward from W', () => {
-          let r = new robot({
+          let r = robot({
             position: [1, 1],
             orientation: 'W',
             planet
           })
-          let newState = r.move('F')
-          expect(newState.position).toEqual([1, 0])
+          r.move('F')
+          expect(r.position).toEqual([1, 0])
+        })
+
+        it('should move x forward two positions', () => {
+          let r = robot({
+            position: [1, 1],
+            orientation: 'E'
+          })
+          r.move('F')
+          r.move('F')
+          expect(r.position).toEqual([1, 3])
         })
       })
       describe('move(L)', () => {
@@ -63,8 +73,8 @@ describe('Robot', () => {
             orientation: 'N',
             position: [1, 1]
           })
-          let newState = r.move('L')
-          expect(newState.orientation).toEqual('W')
+          r.move('L')
+          expect(r.orientation).toEqual('W')
         })
         it('should change orientation from E to N', () => {
           let r = robot({
@@ -72,8 +82,8 @@ describe('Robot', () => {
             orientation: 'E',
             position: [1, 1]
           })
-          let newState = r.move('L')
-          expect(newState.orientation).toEqual('N')
+          r.move('L')
+          expect(r.orientation).toEqual('N')
         })
         it('should change orientation from S to E', () => {
           let r = robot({
@@ -81,8 +91,8 @@ describe('Robot', () => {
             orientation: 'S',
             position: [1, 1]
           })
-          let newState = r.move('L')
-          expect(newState.orientation).toEqual('E')
+          r.move('L')
+          expect(r.orientation).toEqual('E')
         })
         it('should change orientation from W to S', () => {
           let r = robot({
@@ -90,8 +100,30 @@ describe('Robot', () => {
             orientation: 'W',
             position: [1, 1]
           })
-          let newState = r.move('L')
-          expect(newState.orientation).toEqual('S')
+          r.move('L')
+          expect(r.orientation).toEqual('S')
+        })
+        it('should handle multiple move L calls', () => {
+          let r = robot({
+            planet,
+            orientation: 'W',
+            position: [1, 1]
+          })
+          r.move('L')
+          r.move('L')
+          expect(r.orientation).toEqual('E')
+        })
+        it('should treat 4 rotations as no rotation', () => {
+          let r = robot({
+            planet,
+            orientation: 'W',
+            position: [1, 1]
+          })
+          r.move('L')
+          r.move('L')
+          r.move('L')
+          r.move('L')
+          expect(r.orientation).toEqual('W')
         })
       })
       describe('move(R)', () => {
@@ -101,8 +133,8 @@ describe('Robot', () => {
             orientation: 'N',
             position: [1, 1]
           })
-          let newState = r.move('R')
-          expect(newState.orientation).toEqual('E')
+          r.move('R')
+          expect(r.orientation).toEqual('E')
         })
         it('should change orientation from E to S', () => {
           let r = robot({
@@ -110,8 +142,8 @@ describe('Robot', () => {
             orientation: 'E',
             position: [1, 1]
           })
-          let newState = r.move('R')
-          expect(newState.orientation).toEqual('S')
+          r.move('R')
+          expect(r.orientation).toEqual('S')
         })
         it('should change orientation from S to W', () => {
           let r = robot({
@@ -119,8 +151,8 @@ describe('Robot', () => {
             orientation: 'S',
             position: [1, 1]
           })
-          let newState = r.move('R')
-          expect(newState.orientation).toEqual('W')
+          r.move('R')
+          expect(r.orientation).toEqual('W')
         })
         it('should change orientation from W to N', () => {
           let r = robot({
@@ -128,9 +160,54 @@ describe('Robot', () => {
             orientation: 'W',
             position: [1, 1]
           })
-          let newState = r.move('R')
-          expect(newState.orientation).toEqual('N')
+          r.move('R')
+          expect(r.orientation).toEqual('N')
+        })
+        it('should handle multiple move(R) calls', () => {
+          let r = robot({
+            planet,
+            orientation: 'W',
+            position: [1, 1]
+          })
+          r.move('R')
+          r.move('R')
+          expect(r.orientation).toEqual('E')
         })
       })
+      describe('move()', () => {
+        it('should follow multiple move calls', () => {
+          let r = robot({
+            position: [1, 1],
+            orientation: 'E'
+          })
+          r.move('F')
+          r.move('L')
+          r.move('F')
+          r.move('L')
+          r.move('F')
+          r.move('F')
+          r.move('R')
+          r.move('R')
+          r.move('F')
+          expect(r.position).toEqual([0, 1])
+        })
+      })
+  })
+  describe('lose()', () => {
+    it('should default to false', () => {
+      let r = robot({
+        position: [0, 0],
+        orientation: 'N'
+      })
+      expect(r.lost).toEqual(false)
+    })
+    it('should set lost to true', () => {
+      let r = robot({
+        position: [0, 0],
+        orientation: 'N'
+      })
+      r.lose()
+      expect(r.lost).toEqual(true)
+    })
   })
 })
