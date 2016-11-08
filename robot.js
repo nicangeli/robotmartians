@@ -47,12 +47,12 @@ const robot = {
     const movements = {
       'F': () => {
         let initialPosition = this.position
-        if (!this.planet.isSmelly(initialPosition) && !this.lost) {
+        if (!this.planet.isSmelly(initialPosition, this.orientation) && !this.lost) {
           this.position = newPositionForOrientation(initialPosition, this.orientation)
           if (!this.planet.isPositionInGrid(this.position)) {
             this.lost = true
             this.position = initialPosition
-            this.planet.dropScent(initialPosition)
+            this.planet.dropScent(initialPosition, this.orientation)
           }
         }
       },

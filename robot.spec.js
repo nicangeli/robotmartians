@@ -11,13 +11,13 @@ describe('Robot', () => {
 
   describe('move()', () => {
     describe('movement with relation to a planet', () => {
-      it('should not move if planet has scent on current position', () => {
+      it('should not move if planet has scent on current position and orientation', () => {
         let r = robot({
           position: [0, 0],
           orientation: 'N',
           planet: p
         })
-        p.dropScent(r.position)
+        p.dropScent(r.position, 'N')
         r.move('F')
         expect(r.position).toEqual([0, 0])
       })

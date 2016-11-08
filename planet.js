@@ -9,19 +9,25 @@ const planet = {
     for (let i = 0; i <= width; i++) {
       this.grid[i] = []
       for (let j = 0; j <= height; j++) {
-        this.grid[i][j] = false
+        this.grid[i][j] = {
+          'N': false,
+          'S': false,
+          'E': false,
+          'W': false
+        }
       }
     }
 
     return this
   },
-  dropScent (position) {
+  dropScent (position, orientation) {
     let [x, y] = position
-    this.grid[x][y] = true
+    let existingScent = this.grid[x][y]
+    this.grid[x][y] = Object.assign({}, existingScent, {[orientation]: true})
   },
-  isSmelly (position) {
+  isSmelly (position, orientation) {
     let [x, y] = position
-    return this.grid[x][y]
+    return this.grid[x][y][orientation]
   },
   isPositionInGrid (position) {
     let [x, y] = position
