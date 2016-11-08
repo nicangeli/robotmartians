@@ -42,13 +42,19 @@ const robot = {
   position: [0, 0],
   orientation: 'N',
   lost: false,
-  lose () {
-    this.lost = true
-  },
+  planet: null,
   move (direction) {
     const movements = {
       'F': () => {
-        this.position = newPositionForOrientation(this.position, this.orientation)
+        let initialPosition = this.position
+        if (!this.planet.isSmelly(initialPosition)) {
+          this.position = newPositionForOrientation(initialPosition, this.orientation)
+        }
+        if (!this.planet.isPositionInGrid(this.position)) {
+          this.lost = true
+          this.position = initialPosition
+          this.planet.dropScent(initialPosition)
+        }
       },
       'L': () => {
         this.orientation = rotateLeft(this.orientation)
