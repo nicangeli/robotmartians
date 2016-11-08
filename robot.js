@@ -47,7 +47,7 @@ const robot = {
     const movements = {
       'F': () => {
         let initialPosition = this.position
-        if (!this.planet.isSmelly(initialPosition, this.orientation) && !this.lost) {
+        if (!this.planet.isSmelly(initialPosition, this.orientation)) {
           this.position = newPositionForOrientation(initialPosition, this.orientation)
           if (!this.planet.isPositionInGrid(this.position)) {
             this.lost = true
@@ -63,7 +63,9 @@ const robot = {
         this.orientation = rotateRight(this.orientation)
       }
     }
-    movements[direction]()
+    if (!this.lost) {
+      movements[direction]()
+    }
   }
 }
 

@@ -6,23 +6,33 @@ const planet = require('./planet')
 describe('Robot', () => {
   let p
   beforeEach(() => {
-    p = planet(10, 10)
+    p = planet(5, 3)
   })
 
   describe('move()', () => {
-    describe('movement with relation to a planet', () => {
+    describe('movement on scented squares', () => {
       it('should not move if planet has scent on current position and orientation', () => {
         let r = robot({
           position: [0, 0],
           orientation: 'N',
           planet: p
         })
-        p.dropScent(r.position, 'N')
+        p.dropScent(r.position, r.orientation)
         r.move('F')
         expect(r.position).toEqual([0, 0])
       })
+      it('should move if a planet has scent on current position but different orientation', () => {
+        let r = robot({
+          position: [1, 1],
+          orientation: 'E',
+          planet: p
+        })
+        p.dropScent(r.position, 'N')
+        r.move('F')
+        expect(r.position).toEqual([2, 1])
+      })
     })
-    describe('lost robots', () => {
+    describe('movement for lost robots', () => {
       it('should not move the position of lost robots', () => {
         let r = robot({
           position: [0, 0],
@@ -31,6 +41,20 @@ describe('Robot', () => {
         })
         r.move('F')
         expect(r.lost).toEqual(true)
+        expect(r.position).toEqual([0, 0])
+      })
+      it('should ignore subsequent calls to move a lost robot', () => {
+        let r = robot({
+          position: [0, 0],
+          orientation: 'S',
+          planet: p
+        })
+        r.move('F')
+        r.move('L')
+        r.move('L')
+        r.move('F')
+        expect(r.lost).toEqual(true)
+        expect(r.orientation).toEqual('S')
         expect(r.position).toEqual([0, 0])
       })
     })
