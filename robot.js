@@ -2,16 +2,16 @@ function newPositionForOrientation (position, orientation) {
   let [x, y] = position
    let movementFunctions = {
      'N': () => {
-       return [x - 1, y]
-     },
-     'E': () => {
        return [x, y + 1]
      },
-     'S': () => {
+     'E': () => {
        return [x + 1, y]
      },
-     'W': () => {
+     'S': () => {
        return [x, y - 1]
+     },
+     'W': () => {
+       return [x - 1, y]
      }
    }
    return movementFunctions[orientation]()
@@ -47,13 +47,13 @@ const robot = {
     const movements = {
       'F': () => {
         let initialPosition = this.position
-        if (!this.planet.isSmelly(initialPosition)) {
+        if (!this.planet.isSmelly(initialPosition) && !this.lost) {
           this.position = newPositionForOrientation(initialPosition, this.orientation)
-        }
-        if (!this.planet.isPositionInGrid(this.position)) {
-          this.lost = true
-          this.position = initialPosition
-          this.planet.dropScent(initialPosition)
+          if (!this.planet.isPositionInGrid(this.position)) {
+            this.lost = true
+            this.position = initialPosition
+            this.planet.dropScent(initialPosition)
+          }
         }
       },
       'L': () => {

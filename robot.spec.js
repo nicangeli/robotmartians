@@ -26,7 +26,7 @@ describe('Robot', () => {
       it('should not move the position of lost robots', () => {
         let r = robot({
           position: [0, 0],
-          orientation: 'N',
+          orientation: 'S',
           planet: p
         })
         r.move('F')
@@ -36,45 +36,45 @@ describe('Robot', () => {
     })
     describe('simple movements', () => {
         describe('move(F)', () => {
-          it('should move x position when moving forward from North', () => {
+          it('should move y position when moving forward from North', () => {
             let r = robot({
                 position: [1, 1],
                 orientation: 'N',
                 planet: p
             })
             r.move('F')
-            expect(r.position).toEqual([0, 1])
+            expect(r.position).toEqual([1, 2])
             expect(r.orientation).toEqual('N')
           })
 
-          it('should move y position forwards when moving forward from E', () => {
+          it('should move x position forwards when moving forward from E', () => {
             let r = robot({
               position: [1, 1],
               orientation: 'E',
               planet: p
             })
             r.move('F')
-            expect(r.position).toEqual([1, 2])
+            expect(r.position).toEqual([2, 1])
           })
 
-          it('should move x position when moving forwads from S', () => {
+          it('should move y position when moving forwads from S', () => {
             let r = robot({
               position: [1, 1],
               orientation: 'S',
               planet: p
             })
             r.move('F')
-            expect(r.position).toEqual([2, 1])
+            expect(r.position).toEqual([1, 0])
           })
 
-          it('should move y position backwards when moving forward from W', () => {
+          it('should move x position backwards when moving forward from W', () => {
             let r = robot({
               position: [1, 1],
               orientation: 'W',
               planet: p
             })
             r.move('F')
-            expect(r.position).toEqual([1, 0])
+            expect(r.position).toEqual([0, 1])
           })
 
           it('should move x forward two positions', () => {
@@ -85,7 +85,7 @@ describe('Robot', () => {
             })
             r.move('F')
             r.move('F')
-            expect(r.position).toEqual([1, 3])
+            expect(r.position).toEqual([3, 1])
           })
         })
         describe('move(L)', () => {
@@ -203,16 +203,16 @@ describe('Robot', () => {
               orientation: 'E',
               planet: p
             })
-            r.move('F')
-            r.move('L')
-            r.move('F')
-            r.move('L')
-            r.move('F')
-            r.move('F')
-            r.move('R')
-            r.move('R')
-            r.move('F')
-            expect(r.position).toEqual([0, 1])
+            r.move('F') // 2, 1
+            r.move('L') // N
+            r.move('F') // 2, 2
+            r.move('L') // W
+            r.move('F') // 1, 2
+            r.move('F') // 0, 2
+            r.move('R') // N
+            r.move('R') // E
+            r.move('F') // 1, 2
+            expect(r.position).toEqual([1, 2])
           })
         })
       })

@@ -6,9 +6,9 @@ const planet = {
     this.height = height
     this.grid = []
 
-    for (let i = 0; i < width; i++) {
+    for (let i = 0; i <= width; i++) {
       this.grid[i] = []
-      for (let j = 0; j < height; j++) {
+      for (let j = 0; j <= height; j++) {
         this.grid[i][j] = false
       }
     }
@@ -28,7 +28,7 @@ const planet = {
     if (x < 0 || y < 0) {
       return false
     }
-    return x < this.width && y < this.height
+    return x <= this.width && y <= this.height
   }
 }
 

@@ -47,11 +47,52 @@ describe('sample input', () => {
     r2.move('F')
     r2.move('L')
     r2.move('L')
-
     expect(r2.position).toEqual([3, 3])
     expect(r2.orientation).toEqual('N')
-    expect(r.lost).toEqual(true)
+    expect(r2.lost).toEqual(true)
 
+    let r3 = robot({
+      planet: p,
+      orientation: 'W',
+      position: [0, 3]
+    })
+
+    // LLFFFLFLFL
+    console.log(r3.planet)
+
+    console.log(r3.position)
+    console.log(r3.orientation)
+    r3.move('L')
+    console.log(r3.position)
+    console.log(r3.orientation)
+    r3.move('L')
+    console.log(r3.position)
+    console.log(r3.orientation)
+    r3.move('F')
+    console.log(r3.position)
+    console.log(r3.orientation)
+    r3.move('F')
+    console.log(r3.position)
+    console.log(r3.orientation)
+    r3.move('F')
+    console.log(r3.position)
+    console.log(r3.orientation)
+    r3.move('L')
+    console.log(r3.position)
+    console.log(r3.orientation)
+    r3.move('F')
+    console.log(r3.position)
+    console.log(r3.orientation)
+    r3.move('L')
+    console.log(r3.position)
+    console.log(r3.orientation)
+    r3.move('F')
+    console.log(r3.position)
+    console.log(r3.orientation)
+    r3.move('L')
+    expect(r3.position).toEqual([2, 3])
+    expect(r3.orientation).toEqual('S')
+    expect(r3.lost).toEqual(false)
 
   })
 
